@@ -59,6 +59,28 @@
 
 <script>
 
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
+    if (!audio) {
+      return; // Con esto cortamos la funcion para que no retorne un valor null en caso de no encontrar un keyCode valido.
+    }
+    audio.currentTime = 0; // Quita el delay para q cada vez que presione la tecla se reproduzca el sonido
+    audio.play();
+    key.classList.toggle('playing')
+  }
+  
+  function removeTransition(e) {
+    if (e.propertyName !== 'transform') {
+      return;
+    }
+    this.classList.remove('playing');
+  }
+  
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend',removeTransition));  
+  
+  window.addEventListener('keydown', playSound);
 </script>
 
 
